@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,5 +15,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+//Route::get('/', function () {
+//    return redirect('/pages/index.html');
+//});
+
+//Route::get('/',function(){
+//    //跳转到前端登录的界面
+//    return redirect('pages/login.html');
+//} );
+
+//相应的接口路由
+Route::get('/auth/login', 'Auth\AuthController@postLogin');
+Route::get('/auth/logout', 'Auth\AuthController@getLogout');
+//coding..  其他路由
