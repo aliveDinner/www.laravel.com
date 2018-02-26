@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-trait CommonController
+trait CommonHelper
 {
 
     protected $_instance;

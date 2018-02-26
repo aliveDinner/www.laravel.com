@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://www.boom.com'),
+    'url' => env('APP_URL', 'https://www.laravel.com'),
 
     /*
     |--------------------------------------------------------------------------

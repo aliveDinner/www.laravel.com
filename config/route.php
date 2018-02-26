@@ -3,9 +3,9 @@
 return [
 
     //默认域名
-    'app_url' => 'www.boom.com',
+    'app_url' => 'www.laravel.com',
     //PC端域名
-    'site_url' => 'www.boom.com',
+    'site_url' => 'www.laravel.com',
     //手机域名
     'phone_url' => 'm.boom.com',
     //后台域名
