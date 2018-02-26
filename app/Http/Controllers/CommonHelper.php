@@ -33,13 +33,13 @@ trait CommonHelper
     public function json($data = [], $type = 'json', $status = 200, array $headers = [], $options = 0)
     {
         $result = [];
-        $code = '10000';
+        $code = '200';
 
         if (isset($data['code'])) {
             $code = (string)(($data['code'] === null || $data['code'] === '' || $data['code'] === true) ? $code : $data['code']);
         }
 
-        $message = ($code !== '10000') ? '失败' : '成功';
+        $message = ($code !== '200') ? '失败' : '成功';
         if (isset($data['message'])) {
             $message = (string)(($data['message'] === null || $data['message'] === true) ? $message : $data['message']);
         }
@@ -48,7 +48,7 @@ trait CommonHelper
             $ret = [
                 'code' => $code,
                 'message' => $message,
-                'result' => ($code === '10000' ? $data : []),
+                'result' => ($code === '200' ? $data : []),
             ];
         } else {
             $result = ($data['result'] === null || $data['result'] === true) ? $result : $data['result'];
@@ -57,6 +57,14 @@ trait CommonHelper
                 'message' => $message,
                 'result' => $result,
             ];
+        }
+
+        if ($code === '200') {
+            $errors = [];
+            if (isset($data['errors'])) {
+                $errors = ($data['errors'] === null || $data['errors'] === true) ? $errors : $data['errors'];
+            }
+            $ret['errors'] = $code === '200' ? $errors : [];
         }
 
         switch (strtoupper($type)) {

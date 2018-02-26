@@ -52,6 +52,7 @@ return [
                 'username' => 'wofang_local',
                 'password' => 'wofang_local',
             ],
+            'sticky'    => true,
             'driver' => 'mysql',
             'host' => env('DB_HOST', '192.168.5.250'),
             'port' => env('DB_PORT', '3306'),
