@@ -14,7 +14,7 @@ class UserController extends BaseController
         $data = [];
         $id = rand(2, 39204);
         $num = rand(15, 25);
-        $users = DBHelper('table', 'role_user')->where('id', '>=', $id)->limit($num)->orderByDesc('id')->get();
+        $users = DBHelper('table', 'users')->where('id', '>=', $id)->limit($num)->orderByDesc('id')->get();
         foreach ($users as $user) {
             $data[] = [
                 'id' => $user->id,
@@ -33,7 +33,7 @@ class UserController extends BaseController
     public function create()
     {
         $id = rand(2, 39204);
-        $user = DBHelper('table', 'role_user')->find($id);
+        $user = DBHelper('table', 'users')->find($id);
         if ($user) {
             $data = [
                 'id' => $user->id,
@@ -55,7 +55,7 @@ class UserController extends BaseController
     public function update($id)
     {
         $id = rand(2, 39204);
-        $user = DBHelper('table', 'role_user')->find($id);
+        $user = DBHelper('table', 'users')->find($id);
         if ($user) {
             $data = [
                 'id' => $user->id,

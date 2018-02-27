@@ -21,12 +21,13 @@ class auth{
     {
         Route::prefix('/auth')->group(function (){
             // 认证路由...
-            Route::get('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogin']);
-            Route::post('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@postLogin']);
-            Route::get('/logout', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogout']);
-            // 注册路由...
-            Route::get('/register', ['as' => 'home', 'uses' => 'Auth\AuthController@getRegister']);
-            Route::post('/register', ['as' => 'home', 'uses' => 'Auth\AuthController@getRegister']);
+            Route::any('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogin']);
+//            Route::get('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogin']);
+//            Route::post('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@postLogin']);
+//            Route::get('/logout', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogout']);
+//            // 注册路由...
+//            Route::get('/register', ['as' => 'home', 'uses' => 'Auth\AuthController@getRegister']);
+//            Route::post('/register', ['as' => 'home', 'uses' => 'Auth\AuthController@getRegister']);
         });
     }
 }

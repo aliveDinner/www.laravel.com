@@ -31,3 +31,6 @@ Route::get('/', function () {
 Route::get('/auth/login', 'Auth\AuthController@postLogin');
 Route::get('/auth/logout', 'Auth\AuthController@getLogout');
 //coding..  其他路由
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
