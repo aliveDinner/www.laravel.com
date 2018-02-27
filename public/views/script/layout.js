@@ -1,7 +1,7 @@
 app.controller('SiteController', function ($scope, $http, APP_URL) {
     //retrieve user listing from API
     $http.get(APP_URL + "user").then(function (response) {
-        if (response.data.code === '10000'){
+        if (response.data.code === '200'){
             $scope.users = response.data.result;
         }
     }, function (error) {
@@ -17,7 +17,7 @@ app.controller('SiteController', function ($scope, $http, APP_URL) {
                 $scope.form_title = "Add New User";
                 $scope.user = null;
                 break;
-            case 'edit':
+            case 'update':
                 $scope.user = $scope.users[key];
                 $scope.form_title = "User Detail";
                 $scope.id = $scope.user.id;
@@ -33,8 +33,8 @@ app.controller('SiteController', function ($scope, $http, APP_URL) {
     $scope.save = function (modalstate, id, key) {
         var url = APP_URL + "user/create";
 
-        //append employee id to the URL if the form is in edit mode
-        if (modalstate === 'edit') {
+        //append employee id to the URL if the form is in update mode
+        if (modalstate === 'update') {
             url = APP_URL + "user/update/" + id;
         }
 
@@ -45,8 +45,8 @@ app.controller('SiteController', function ($scope, $http, APP_URL) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then(function (response) {
             console.log(response);
-            if (response.data.code === '10000'){
-                if (modalstate === 'edit') {
+            if (response.data.code === '200'){
+                if (modalstate === 'update') {
                     $scope.users[key] = response.data.result;
                 }else{
                     $scope.users.push(response.data.result);
@@ -75,7 +75,7 @@ app.controller('SiteController', function ($scope, $http, APP_URL) {
             method: 'DELETE',
             url: APP_URL + 'user/delete/' + id
         }).then(function (response) {
-            if (response.data.code === '10000'){
+            if (response.data.code === '200'){
                 $scope.users.splice(key,1);
                 alert(response.data.message);
                 $('#myModalDelete').modal('hide');

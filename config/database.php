@@ -41,16 +41,16 @@ return [
 
         'mysql' => [
             'read' => [
-                'host' => '192.168.5.250',
-                'database' => 'wofang',
-                'username' => 'wofang_local',
-                'password' => 'wofang_local',
+                'host' => '127.0.0.1',
+                'database' => 'laravel',
+                'username' => 'root',
+                'password' => 'root',
             ],
             'write' => [
-                'host' => '192.168.5.250',
-                'database' => 'wofang',
-                'username' => 'wofang_local',
-                'password' => 'wofang_local',
+                'host' => '127.0.0.1',
+                'database' => 'laravel',
+                'username' => 'root',
+                'password' => 'root',
             ],
             'sticky'    => true,
             'driver' => 'mysql',
@@ -62,7 +62,7 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            'prefix' => 'wf_',
+            'prefix' => 'app_',
             'strict' => true,
             'engine' => null,
         ],
