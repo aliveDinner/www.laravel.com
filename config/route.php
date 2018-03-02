@@ -2,16 +2,27 @@
 
 return [
 
+    //http 协议
+    'http' => 'https',
+
+    //允许跨域
+    'allow_origin' => [
+        'www.laravel.com',
+        'm.laravel.com',
+        'cms.laravel.com',
+        'api.laravel.com',
+    ],
+
     //默认域名
     'app_url' => 'www.laravel.com',
     //PC端域名
     'site_url' => 'www.laravel.com',
     //手机域名
-    'phone_url' => 'm.boom.com',
+    'phone_url' => 'm.laravel.com',
     //后台域名
-    'backend_url' => 'cms.boom.com',
+    'backend_url' => 'cms.laravel.com',
     //API域名
-    'api_url' => 'api.boom.com',
+    'api_url' => 'api.laravel.com',
 
     //默认中间路由名
     'default_middleware_name' => 'web',

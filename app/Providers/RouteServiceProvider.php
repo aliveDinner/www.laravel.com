@@ -80,7 +80,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
 
         //额外路由文件夹
-        $this->mapOtherRoutesFile();
+//        $this->mapOtherRoutesFile();
 
         //额外路由
 //        $this->mapRoutes();

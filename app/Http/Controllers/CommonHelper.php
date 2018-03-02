@@ -67,6 +67,20 @@ trait CommonHelper
             $ret['errors'] = $code === '200' ? $errors : [];
         }
 
+        //跨域
+        $origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : '';
+
+        $allow_origin = config('route.allow_origin');
+        $http = config('route.http');
+
+        foreach ($allow_origin as $key => $url){
+            $allow_origin[$key] = $http.'://'.$url;
+        }
+
+        if(in_array($origin, $allow_origin)){
+            header('Access-Control-Allow-Origin:'.$origin);
+        }
+
         switch (strtoupper($type)) {
             case 'JSON' : // 返回JSON数据格式到客户端 包含状态信息
             {

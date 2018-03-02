@@ -21,7 +21,7 @@ class auth{
     {
         Route::prefix('/auth')->group(function (){
             // 认证路由...
-            Route::any('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogin']);
+//            Route::any('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogin']);
 //            Route::get('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogin']);
 //            Route::post('/login', ['as' => 'home', 'uses' => 'Auth\AuthController@postLogin']);
 //            Route::get('/logout', ['as' => 'home', 'uses' => 'Auth\AuthController@getLogout']);
