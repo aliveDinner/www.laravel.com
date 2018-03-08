@@ -31,7 +31,7 @@ class Helper
         if (!$instance) {
             $instance = self::$_instance = new static();
         }
-        return $instance ->__call($name, $arguments);
+        return $instance->__call($name, $arguments);
     }
 
     /**
@@ -44,9 +44,9 @@ class Helper
         if (!self::$_instance) {
             self::$_instance = new static();
         }
-        if (method_exists(self::$_instance,$name)){
+        if (method_exists(self::$_instance, $name)) {
             return self::$_instance->$name($arguments);
-        }else{
+        } else {
             return null;
         }
     }
@@ -861,6 +861,60 @@ class Helper
         return $res;
     }
 
+    public static function openssl($options = [])
+    {
+        $default = [
+            "privateKeyBits" => '1024', //大小bits
+            "countryName" => 'CN', //所在国家名称
+            "stateOrProvinceName" => 'HaiNan', //所在省份名称
+            "localityName" => 'HaiKou', //所在城市名称
+            "organizationName" => 'wofang',   //注册人姓名
+            "organizationalUnitName" => 'wofang', //组织名称
+            "commonName" => 'wofang', //公共名称
+            "emailAddress" => 'wofang@qq.com', //邮箱
+            "privateKeyPassWord" => self::getCode(16, 5), //私钥密码
+            "duration" => '3650', //有效时长天
+            "digestAlg" => 'sha256', //加密方法别名
+        ];
+        $options = array_merge($default, $options);
+        $keys = [
+            'countryName',
+            'stateOrProvinceName',
+            'localityName',
+            'organizationName',
+            'organizationalUnitName',
+            'commonName',
+            'emailAddress',
+        ];
+        $distinguishedName = [];
+        foreach ($options as $key => $option) {
+            if (in_array($key, $keys)) {
+                $distinguishedName[$key] = $option;
+            }
+        }
+        $privateKeyBits = isset($options['privateKeyBits']) ? $options['privateKeyBits'] : 1024;
+        $privateKeyPassWord = isset($options['privateKeyPassWord']) ? $options['privateKeyPassWord'] : self::getCode(16, 5);
+        $duration = isset($options['duration']) ? $options['duration'] : 3650;
+        $sha256 = isset($options['digestAlg']) ? $options['digestAlg'] : 'sha256';
+        //生成证书
+        // Generate a new private (and public) key pair
+        $privkey = openssl_pkey_new(["private_key_bits" => $privateKeyBits, "private_key_type" => OPENSSL_KEYTYPE_RSA]);
+        // Generate a certificate signing request
+        $csr = openssl_csr_new($distinguishedName, $privkey, ['digest_alg' => $sha256]);
+        // Generate a self-signed cert, valid for 365 days
+        try{
+            $x509 = openssl_csr_sign($csr, null, $privkey, $duration, ['digest_alg' => $sha256]);
+        }catch (\Exception $e){
+            return '生成签名失败:openssl.cnf配置不对';
+        }
+        openssl_x509_export($x509, $csrkey); //导出证书密钥$csrkey
+        openssl_pkcs12_export($x509, $privatekey, $privkey, $privateKeyPassWord); //导出密钥$privatekey
+        return [
+            'public' => $csrkey,
+            'private' => $privatekey,
+            'options' => $options,
+        ];
+    }
 
     /**
      * @description 推送的Curl方法
@@ -1522,15 +1576,14 @@ class Helper
      * @param int $length
      * @return string
      */
-    public static function getCode($length = 4)
+    public static function getHash($length = 4)
     {
         // 生成字符串
         $code = '';
         if ($length < 1) {
             $length = 1;
         }
-        for ($i = 0; $i < $length; $i++)
-        {
+        for ($i = 0; $i < $length; $i++) {
             $code .= chr(mt_rand(33, 126));
         }
         return $code;
@@ -1539,20 +1592,62 @@ class Helper
     /**
      * @description 随机字符串
      * @param int $length
-     * @param string $string
+     * @param int $type 1数值，2小写，3小写加数值，4大写，5大写加数值，6大小写，其他参数值全部字符串，可支持参数$string自定义字符串
+     * @param string $string 自定义字符串
      * @return string
      */
-    public static function getString($length = 4,$string = null)
+    public static function getCode($length = 4, $type = 0, $string = '')
     {
         // 生成随机
-        $zhSet = $string? $string: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|';
+        if (!empty($string)) {
+            $setCode = (string)$string ? (string)$string : 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|';
+        } else {
+            switch ($type) {
+                case 1: {
+                    //数值
+                    $setCode = '0123456789';
+                }
+                    break;
+                case 2: {
+                    //小写
+                    $setCode = 'abcdefghijklmnopqrstuvwxyz';
+                }
+                    break;
+                case 3: {
+                    //小写加数值
+                    $setCode = '0123456789abcdefghijklmnopqrstuvwxyz';
+                }
+                    break;
+                case 4: {
+                    //大写
+                    $setCode = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                }
+                    break;
+                case 5: {
+                    //大写加数值
+                    $setCode = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                }
+                    break;
+                case 6: {
+                    //大小写
+                    $setCode = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                }
+                    break;
+                default: {
+                    // 生成随机
+                    $setCode = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|';
+                }
+                    break;
+            }
+        }
+
         $code = '';
         $length = intval($length);
         if ($length < 1) {
             $length = 1;
         }
         for ($i = 0; $i < $length; $i++) {
-            $code .= iconv_substr($zhSet, floor(mt_rand(0, mb_strlen($zhSet, 'utf-8') - 1)), 1, 'utf-8');
+            $code .= iconv_substr($setCode, floor(mt_rand(0, mb_strlen($setCode, 'utf-8') - 1)), 1, 'utf-8');
         }
         return $code;
     }

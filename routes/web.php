@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+
+Route::get('/', 'Back\IndexController@index')->name('back');
+
+Route::get('/crypt', 'Back\IndexController@crypt')->name('back');
 
 //Route::get('/', function () {
 //    return redirect('/pages/index.html');
