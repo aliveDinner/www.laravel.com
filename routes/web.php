@@ -20,6 +20,8 @@ Route::get('/', 'Back\IndexController@index')->name('back');
 
 Route::get('/crypt', 'Back\IndexController@crypt')->name('back');
 
+Route::get('/loan', 'Back\IndexController@loan')->name('back');
+
 //Route::get('/', function () {
 //    return redirect('/pages/index.html');
 //});

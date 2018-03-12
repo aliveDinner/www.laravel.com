@@ -13,6 +13,13 @@ class IndexController extends BaseController
     {
         return view('index');
     }
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function loan()
+    {
+        return view('back.loan');
+    }
 
     public function crypt()
     {
